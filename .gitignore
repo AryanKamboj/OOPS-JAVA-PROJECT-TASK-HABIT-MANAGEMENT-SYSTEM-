@@ -1,0 +1,26 @@
+# .gitignore — Task & Habit Management System
+
+# Compiled Java class files
+*.class
+
+# Runtime data (do NOT commit saved user data)
+data/tasks.txt
+data/habits.txt
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE project files
+.idea/
+*.iml
+.vscode/
+*.classpath
+*.project
+.settings/
+
+# Build output directories (if added later)
+out/
+bin/
+build/
