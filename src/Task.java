@@ -1,13 +1,8 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-/**
- * Represents a single task in the Task & Habit Management System.
- * Demonstrates encapsulation: all fields are private, accessed via getters/setters.
- */
 public class Task {
 
-    // Priority options a task can have
     public enum Priority { HIGH, MEDIUM, LOW }
 
     private int id;
@@ -19,17 +14,15 @@ public class Task {
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-    // Parameterized constructor — every task must be initialized with all required data
     public Task(int id, String title, String description, Priority priority, LocalDate dueDate) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.priority = priority;
         this.dueDate = dueDate;
-        this.completed = false; // new tasks start as pending
+        this.completed = false;
     }
 
-    // Getters
     public int getId() { return id; }
     public String getTitle() { return title; }
     public String getDescription() { return description; }
@@ -37,25 +30,20 @@ public class Task {
     public LocalDate getDueDate() { return dueDate; }
     public boolean isCompleted() { return completed; }
 
-    // Setter — only completion status can change after creation
     public void setCompleted(boolean completed) { this.completed = completed; }
 
-    // Returns true if the task is past its due date and not yet completed
     public boolean isOverdue() {
         return !completed && dueDate.isBefore(LocalDate.now());
     }
 
-    // Human-readable date string
     public String getDueDateString() {
         return dueDate.format(DATE_FORMAT);
     }
 
-    // Formats this task as a pipe-delimited line for saving to file
     public String toFileString() {
         return id + "|" + title + "|" + description + "|" + priority + "|" + dueDate + "|" + completed;
     }
 
-    // Recreates a Task object from a saved file line
     public static Task fromFileString(String line) {
         String[] parts = line.split("\\|", -1);
         if (parts.length != 6) return null;

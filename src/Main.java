@@ -2,25 +2,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
-/**
- * Task & Habit Management System
- * CSC2104 — Object Oriented Programming
- * Manipal University Jaipur | Section T4
- *
- * Team:
- *   Aryan Kamboj   — Reg. No. 2502060008
- *   Aaditya Kalme  — Reg. No. 2502060005
- *
- * Entry point: displays the menu and coordinates all operations.
- */
 public class Main {
 
-    // Data folder is always resolved relative to where the .class files live (the project root)
     private static final String DATA_DIR = resolveDataDir();
 
     private static String resolveDataDir() {
-        // When run via: java -cp . Main (from project root), user.dir is the project root
-        // We create the data folder there if it doesn't exist
         String dir = System.getProperty("user.dir") + java.io.File.separator + "data";
         new java.io.File(dir).mkdirs();
         return dir;
@@ -62,10 +48,6 @@ public class Main {
         printLine();
     }
 
-    // =========================================================
-    //  MENU FEATURES
-    // =========================================================
-
     private static void addTask() {
         printHeader("ADD NEW TASK");
 
@@ -98,7 +80,6 @@ public class Main {
             return;
         }
 
-        // Column headers
         System.out.println("  " + repeat("-", 88));
         System.out.printf("  %s%n", formatRow("ID", "Title", "Priority", "Status", "Due Date", "Description"));
         System.out.println("  " + repeat("-", 88));
@@ -186,7 +167,6 @@ public class Main {
         if (id < 0) return;
 
         String message = habitManager.recordCompletion(id);
-        // recordCompletion returns an error if ID invalid, or a result message otherwise
         if (message.startsWith("Error")) {
             printError(message);
         } else {
@@ -221,9 +201,8 @@ public class Main {
         System.out.printf("  %-25s : %d%n", "Total Completions", totalCompletions);
         System.out.println("  " + repeat("-", 40));
 
-        // Progress bar (visual aid)
         if (total > 0) {
-            int filled = (int) (pct / 5); // each block = 5%
+            int filled = (int) (pct / 5);
             String bar = "[" + repeat("#", filled) + repeat(".", 20 - filled) + "]";
             System.out.println("  Progress: " + bar + " " + String.format("%.1f", pct) + "%");
         }
@@ -250,10 +229,6 @@ public class Main {
         int h = savedHabits.size();
         System.out.println("  Loaded " + t + " task(s) and " + h + " habit(s) from saved data.");
     }
-
-    // =========================================================
-    //  DISPLAY HELPERS
-    // =========================================================
 
     private static void printWelcome() {
         printLine();
@@ -297,14 +272,12 @@ public class Main {
         System.out.println("  [!] " + msg);
     }
 
-    // Repeats a character n times to build separator lines
     private static String repeat(String ch, int n) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < n; i++) sb.append(ch);
         return sb.toString();
     }
 
-    // Formats a 6-column row for the task table
     private static String formatRow(String id, String title, String priority,
                                     String status, String dueDate, String desc) {
         return String.format("%-4s  %-22s  %-8s  %-7s  %-12s  %s",
@@ -316,7 +289,6 @@ public class Main {
         return s.substring(0, max - 2) + "..";
     }
 
-    // Reads an integer from the user; returns -1 on invalid input
     private static int readInt() {
         String line = scanner.nextLine().trim();
         try {

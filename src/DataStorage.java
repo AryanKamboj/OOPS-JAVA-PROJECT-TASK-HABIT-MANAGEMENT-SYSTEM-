@@ -2,25 +2,18 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Handles reading and writing task and habit data to plain text files.
- * Each record occupies one line in the file, using '|' as a delimiter.
- */
 public class DataStorage {
 
     private final String tasksFilePath;
     private final String habitsFilePath;
 
     public DataStorage(String dataDir) {
-        // Ensure the data directory ends with a separator
         if (!dataDir.endsWith(File.separator)) {
             dataDir = dataDir + File.separator;
         }
         this.tasksFilePath = dataDir + "tasks.txt";
         this.habitsFilePath = dataDir + "habits.txt";
     }
-
-    // --- Save operations ---
 
     public void saveTasks(List<Task> tasks) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(tasksFilePath))) {
@@ -40,14 +33,12 @@ public class DataStorage {
         }
     }
 
-    // --- Load operations ---
-
     public List<Task> loadTasks() {
         List<Task> tasks = new ArrayList<>();
         File file = new File(tasksFilePath);
 
         if (!file.exists()) {
-            return tasks; // No file yet — start fresh
+            return tasks;
         }
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {

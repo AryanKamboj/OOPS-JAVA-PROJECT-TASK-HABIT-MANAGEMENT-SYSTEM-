@@ -3,21 +3,16 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Manages the collection of tasks.
- * Handles adding, listing, completing, and deleting tasks.
- */
 public class TaskManager {
 
     private List<Task> tasks;
-    private int nextId; // tracks the next available unique ID
+    private int nextId;
 
     public TaskManager() {
         tasks = new ArrayList<>();
         nextId = 1;
     }
 
-    // Called after loading data from file to set nextId correctly
     public void recalculateNextId() {
         nextId = 1;
         for (Task t : tasks) {
@@ -27,20 +22,16 @@ public class TaskManager {
         }
     }
 
-    // Returns an unmodifiable view of the task list for display and statistics
     public List<Task> getAllTasks() {
         return tasks;
     }
 
-    // Adds a task with the given details. Returns error message or null on success.
     public String addTask(String title, String description, String priorityStr, String dueDateStr) {
-        // Validate title
         if (title == null || title.trim().isEmpty()) {
             return "Error: Task title cannot be blank.";
         }
         title = title.trim();
 
-        // Validate priority
         Task.Priority priority;
         try {
             priority = Task.Priority.valueOf(priorityStr.trim().toUpperCase());
@@ -48,7 +39,6 @@ public class TaskManager {
             return "Error: Priority must be HIGH, MEDIUM, or LOW.";
         }
 
-        // Validate due date (expects YYYY-MM-DD from user input)
         LocalDate dueDate;
         try {
             dueDate = LocalDate.parse(dueDateStr.trim());
@@ -59,10 +49,9 @@ public class TaskManager {
         Task newTask = new Task(nextId, title, description.trim(), priority, dueDate);
         tasks.add(newTask);
         nextId++;
-        return null; // null means success
+        return null;
     }
 
-    // Marks the task with the given ID as completed. Returns error message or null.
     public String completeTask(int id) {
         Task t = findById(id);
         if (t == null) {
@@ -75,7 +64,6 @@ public class TaskManager {
         return null;
     }
 
-    // Removes the task with the given ID. Returns error message or null.
     public String deleteTask(int id) {
         Task t = findById(id);
         if (t == null) {
@@ -85,15 +73,12 @@ public class TaskManager {
         return null;
     }
 
-    // Finds a task by its ID, returns null if not found
     private Task findById(int id) {
         for (Task t : tasks) {
             if (t.getId() == id) return t;
         }
         return null;
     }
-
-    // --- Statistics helpers ---
 
     public int totalTasks() { return tasks.size(); }
 
@@ -117,13 +102,11 @@ public class TaskManager {
         return count;
     }
 
-    // Returns completion percentage, or 0.0 if there are no tasks
     public double completionPercentage() {
         if (totalTasks() == 0) return 0.0;
         return (completedTasks() * 100.0) / totalTasks();
     }
 
-    // Replaces the internal list — used when loading saved data
     public void setTasks(List<Task> loaded) {
         this.tasks = loaded;
         recalculateNextId();
